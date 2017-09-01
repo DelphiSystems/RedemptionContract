@@ -8,7 +8,7 @@ contract Token {
 
 contract RedemptionContract {
   address public token;         // the token address
-  uint public exchangeRate;     // number of tokens per ETH
+  uint public exchangeRate;     // number of ETH per token
 
   event Redemption(address redeemer, uint tokensDeposited, uint redemptionAmount);
 
@@ -24,7 +24,7 @@ contract RedemptionContract {
     // the RedemptionContract address for the deposit amount 
     require(Token(token).transferFrom(msg.sender, this, amount));
     
-    uint redemptionValue = amount / exchangeRate; 
+    uint redemptionValue = amount * exchangeRate; 
     
     msg.sender.transfer(redemptionValue);
     
