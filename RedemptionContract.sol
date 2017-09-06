@@ -7,17 +7,21 @@ contract Token {
 }
 
 contract RedemptionContract {
+  address public funder;        // the account able to fund with ETH
   address public token;         // the token address
   uint public exchangeRate;     // number of tokens per ETH
 
   event Redemption(address redeemer, uint tokensDeposited, uint redemptionAmount);
 
   function RedemptionContract(address _token, uint _exchangeRate) {
-      token = _token;
-      exchangeRate = _exchangeRate;
+    funder = msg.sender;
+    token = _token;
+    exchangeRate = _exchangeRate;
   }
 
-  function fund() payable {}
+  function () payable {
+    require(msg.sender == funder);
+  }
 
   function redeemTokens(uint amount) {
     // NOTE: redeemTokens will only work once the sender has approved 
